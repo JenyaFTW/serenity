@@ -15,9 +15,7 @@ async fn main() -> std::io::Result<()>
 {
     HttpServer::new(|| {
         App::new()
-            .service(
-                web::scope("/api").configure(api_routes)
-            )
+            .service(web::scope("/api").configure(api_routes))
             .service(fs::Files::new("/", "../frontend/dist").index_file("index.html"))
             .default_service(web::resource("").route(web::get().to(vue_index)))
     })
