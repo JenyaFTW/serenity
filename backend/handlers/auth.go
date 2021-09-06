@@ -33,12 +33,12 @@ func AuthLogin(c *gin.Context) {
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(findUser.Password), []byte(postData.Password)); err == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"message": "Logged in"})
+	if err := bcrypt.CompareHashAndPassword([]byte(findUser.Password), []byte(postData.Password)); err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Invalid email/password"})
 		return
 	}
 
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Invalid email/password"})
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Logged in"})
 }
 
 func AuthSignup(c *gin.Context) {
@@ -59,7 +59,5 @@ func AuthSignup(c *gin.Context) {
 	user := models.User{Username: postData.Username, Email: postData.Email, Password: string(hashedPassword)}
 	models.DB.Create(&user)
 
-	c.IndentedJSON(http.StatusCreated, gin.H{
-		"message": "Successfully registered account",
-	})
+	c.IndentedJSON(http.StatusCreated, gin.H{"message": "Successfully registered account"})
 }
