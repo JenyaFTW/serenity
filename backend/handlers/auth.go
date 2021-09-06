@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"backend/auth"
 	"backend/models"
 	"net/http"
 
@@ -18,6 +19,8 @@ type loginJSON struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+var jwtAuthentication = auth.TokenManager{}
 
 func AuthLogin(c *gin.Context) {
 	var postData loginJSON
@@ -38,7 +41,15 @@ func AuthLogin(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, gin.H{"message": "Logged in"})
+	ts, err := jwtAuthentication.CreateToken(findUser.ID.String(), findUser.Username)
+	if err != nil {
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"access_token":  ts.AccessToken,
+		"refresh_token": ts.RefreshToken,
+	})
 }
 
 func AuthSignup(c *gin.Context) {
