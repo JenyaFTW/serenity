@@ -47,6 +47,7 @@ func AuthLogin(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
+		"expires_at":    ts.AtExpires,
 		"access_token":  ts.AccessToken,
 		"refresh_token": ts.RefreshToken,
 	})

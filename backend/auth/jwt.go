@@ -112,7 +112,6 @@ func ExtractToken(r *http.Request) string {
 }
 
 func Extract(token *jwt.Token) (*AccessDetails, error) {
-
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		accessUuid, ok := claims["access_uuid"].(string)
