@@ -33,7 +33,6 @@ func PostProjects(c *fiber.Ctx) error {
 	}
 
 	models.DB.Create(&project)
-
 	return c.Status(http.StatusCreated).JSON(fiber.Map{"message": "Added new project"})
 }
 
@@ -69,7 +68,6 @@ func DeleteProjectById(c *fiber.Ctx) error {
 	id := claims["id"].(string)
 
 	var project models.Project
-
 	models.DB.Delete(&project, "id = ? AND user_id = ?", c.Params("id"), id)
 
 	return c.Status(http.StatusCreated).JSON(fiber.Map{"message": "Successfully deleted project"})

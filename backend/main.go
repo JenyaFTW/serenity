@@ -35,6 +35,9 @@ func main() {
 	projects.Get("/:id", handlers.GetProjectById)
 	projects.Delete("/:id", handlers.DeleteProjectById)
 
+	endpoints := projects.Group("/:id/subdomains")
+	endpoints.Get("/", handlers.GetSubdomains)
+
 	app.Get("*", func(c *fiber.Ctx) error {
 		return c.SendFile("../frontend/dist/index.html")
 	})
